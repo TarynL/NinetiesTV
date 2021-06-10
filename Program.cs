@@ -10,9 +10,9 @@ namespace NinetiesTV
         {
             List<Show> shows = DataLoader.GetShows();
 
-            // Print("All Names", Names(shows));
-            // Print("Alphabetical Names", NamesAlphabetically(shows));
-            // Print("Ordered by Popularity", ShowsByPopularity(shows));
+            Print("All Names", Names(shows));
+            Print("Alphabetical Names", NamesAlphabetically(shows));
+            Print("Ordered by Popularity", ShowsByPopularity(shows));
             Print("Shows with an '&'", ShowsWithAmpersand(shows));
             Print("Latest year a show aired", MostRecentYear(shows));
             Print("Average Rating", AverageRating(shows));
@@ -33,6 +33,7 @@ namespace NinetiesTV
             Print("Most Words in Title", WordieastName(shows));
             Print("All Names", AllNamesWithCommas(shows));
             Print("All Names with And", AllNamesWithCommasPlsAnd(shows));
+            Print("Shows in the Eighties", Eighties(shows));
         }
 
         /**************************************************************************************************
@@ -44,22 +45,22 @@ namespace NinetiesTV
         **************************************************************************************************/
 
         // 1. Return a list of each of show names.
-        // static List<string> Names(List<Show> shows)
-        // {
-        //     return shows.Select(s => s.Name).ToList(); // Looks like this one's already done!
-        // }
+        static List<string> Names(List<Show> shows)
+        {
+            return shows.Select(s => s.Name).ToList(); // Looks like this one's already done!
+        }
 
         // 2. Return a list of show names ordered alphabetically.
-        // static List<string> NamesAlphabetically(List<Show> shows)
-        // {
-        //     return shows.OrderBy(s => s.Name).Select(s => s.Name).ToList();
-        // }
+        static List<string> NamesAlphabetically(List<Show> shows)
+        {
+            return shows.OrderBy(s => s.Name).Select(s => s.Name).ToList();
+        }
 
         // 3. Return a list of shows ordered by their IMDB Rating with the highest rated show first.
-        // static List<Show> ShowsByPopularity(List<Show> shows)
-        // {
-        //     return shows.OrderByDescending(s => s.ImdbRating).ToList();
-        // }
+        static List<Show> ShowsByPopularity(List<Show> shows)
+        {
+            return shows.OrderByDescending(s => s.ImdbRating).ToList();
+        }
 
         // 4. Return a list of shows whose title contains an & character.
         static List<Show> ShowsWithAmpersand(List<Show> shows)
@@ -153,38 +154,43 @@ namespace NinetiesTV
         // 18. Return all dramas except for the highest rated.
         static List<Show> AllButBestDrama(List<Show> shows)
         {
-
+            return shows.Where(s => s.Genres.Contains("Drama")).OrderByDescending(s => s.ImdbRating).Skip(1).ToList();
         }
 
         // 19. Return the number of crime shows with an IMDB rating greater than 7.0.
         static int GoodCrimeShows(List<Show> shows)
         {
-            throw new NotImplementedException();
+            return shows.Where(s => s.ImdbRating > 7 && s.Genres.Contains("Crime")).Count();
         }
 
         // 20. Return the first show that ran for more than 10 years 
         //     with an IMDB rating of less than 8.0 ordered alphabetically.
         static Show FirstLongRunningTopRated(List<Show> shows)
         {
-            throw new NotImplementedException();
+            return shows.OrderBy(s => s.Name).Where(s => s.EndYear - s.StartYear > 10).FirstOrDefault(s => s.ImdbRating < 8);
         }
 
         // 21. Return the show with the most words in the name.
         static Show WordieastName(List<Show> shows)
         {
-            throw new NotImplementedException();
+            return shows.OrderByDescending(s => s.Name.Split(" ").Count()).FirstOrDefault();
         }
 
         // 22. Return the names of all shows as a single string seperated by a comma and a space.
         static string AllNamesWithCommas(List<Show> shows)
         {
-            throw new NotImplementedException();
+            return string.Join(", ", shows.Select(s => s.Name));
         }
 
         // 23. Do the same as above, but put the word "and" between the second-to-last and last show name.
         static string AllNamesWithCommasPlsAnd(List<Show> shows)
         {
-            throw new NotImplementedException();
+            string lastTwo = string.Join(" & ", shows.Select(s => s.Name).OrderByDescending(s => s).Take(2));
+            string allNames = string.Join(", ", shows.Select(s => s.Name).OrderByDescending(s => s).Skip(2));
+            // string lastTwo = string.Join(" & ", shows.Select(s => s.Name).Take(shows.Count - 1));
+            // string allNames = string.Join(", ", shows.Select(s => s.Name).Skip(shows.Count - 1));
+
+            return allNames + lastTwo;
         }
 
 
@@ -201,6 +207,10 @@ namespace NinetiesTV
         **************************************************************************************************/
 
         // 1. Return the genres of the shows that started in the 80s.
+        static List<string> Eighties(List<Show> shows)
+        {
+            return shows.Where(s => s.StartYear >= 1980 && s.StartYear < 1990).Select(s => string.Join(s.Genres).ToList();
+        }
         // 2. Print a unique list of geners.
         // 3. Print the years 1987 - 2018 along with the number of shows that started in each year (note many years will have zero shows)
         // 4. Assume each episode of a comedy is 22 minutes long and each episode of a show that isn't a comedy is 42 minutes. How long would it take to watch every episode of each show?
