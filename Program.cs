@@ -209,7 +209,7 @@ namespace NinetiesTV
         // 1. Return the genres of the shows that started in the 80s.
         static List<string> Eighties(List<Show> shows)
         {
-            return shows.Where(s => s.StartYear >= 1980 && s.StartYear < 1990).Select(s => string.Join(s.Genres).ToList();
+            return shows.Where(s => s.StartYear >= 1980 && s.StartYear < 1990).Select(s => string.Join(" ", s.Genres)).ToList();
         }
         // 2. Print a unique list of geners.
         // 3. Print the years 1987 - 2018 along with the number of shows that started in each year (note many years will have zero shows)
