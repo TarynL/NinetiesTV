@@ -119,39 +119,41 @@ namespace NinetiesTV
         // 13. Return the names of the comedy shows sorted by IMDB rating.
         static List<string> ComediesByRating(List<Show> shows)
         {
-            return
+            return shows.OrderByDescending(s => s.ImdbRating).Where(s => s.Genres.Contains("Comedy")).Select(s => s.Name).ToList();
         }
 
         // 14. Return the shows with more than one genre ordered by their starting year.
         static List<Show> WithMultipleGenresByStartYear(List<Show> shows)
         {
-            throw new NotImplementedException();
+            return shows.OrderBy(s => s.StartYear).Where(s => s.Genres.Count() > 1).ToList();
         }
 
         // 15. Return the show with the most episodes.
         static Show MostEpisodes(List<Show> shows)
         {
-            throw new NotImplementedException();
+            int most = shows.Max(s => s.EpisodeCount);
+            return shows.FirstOrDefault(s => s.EpisodeCount == most);
         }
 
         // 16. Order the shows by their ending year then return the first 
         //     show that ended on or after the year 2000.
         static Show EndedFirstAfterTheMillennium(List<Show> shows)
         {
-            throw new NotImplementedException();
+            int ending = shows.Where(s => s.EndYear >= 2000).Min(s => s.EndYear);
+            return shows.OrderBy(s => s.EndYear).FirstOrDefault(s => s.EndYear == ending);
         }
 
         // 17. Order the shows by rating (highest first) 
         //     and return the first show with genre of drama.
         static Show BestDrama(List<Show> shows)
         {
-            throw new NotImplementedException();
+            return shows.OrderByDescending(s => s.ImdbRating).FirstOrDefault(s => s.Genres.Contains("Drama"));
         }
 
         // 18. Return all dramas except for the highest rated.
         static List<Show> AllButBestDrama(List<Show> shows)
         {
-            throw new NotImplementedException();
+
         }
 
         // 19. Return the number of crime shows with an IMDB rating greater than 7.0.
